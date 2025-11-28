@@ -13,10 +13,10 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
       
@@ -31,7 +31,7 @@ jobs:
           pyinstaller --onefile --name print_agent --console --hidden-import flask --hidden-import requests --clean app/server.py
       
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: print_agent-windows
           path: dist/print_agent.exe
@@ -39,10 +39,10 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
       
@@ -57,7 +57,7 @@ jobs:
           pyinstaller --onefile --name print_agent --console --hidden-import flask --hidden-import requests --clean app/server.py
       
       - name: Upload macOS artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: print_agent-macos
           path: dist/print_agent
@@ -66,16 +66,16 @@ jobs:
     needs: [build-windows, build-macos]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Download Windows artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: print_agent-windows
           path: dist-windows
       
       - name: Download macOS artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: print_agent-macos
           path: dist-macos
@@ -85,7 +85,7 @@ jobs:
           zip -r extension.zip extension/ -x "*.DS_Store"
       
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             dist-windows/print_agent.exe
